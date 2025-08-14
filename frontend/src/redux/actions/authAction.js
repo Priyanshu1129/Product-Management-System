@@ -35,9 +35,11 @@ export const login = (credentials) => async (dispatch) => {
   dispatch(setLoading(true));
   try {
     const data = await loginUser(credentials);
+    console.log("login-res", data);
     dispatch(setUser(data.user));
     dispatch(setSuccessMessage("Login successful"));
   } catch (err) {
+    console.log("login-err", err);
     dispatch(setError(err.response?.data?.message || "Login failed"));
   } finally {
     dispatch(setLoading(false));
