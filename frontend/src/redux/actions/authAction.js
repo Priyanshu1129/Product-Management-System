@@ -77,13 +77,11 @@ export const checkAuth = () => async (dispatch) => {
     const res = await checkAuthStatus();
     if (res.success) {
       dispatch(setUser(res.user));
-      dispatch(setSuccessMessage("Authenticated successfully"));
     } else {
       dispatch(setUser(null));
     }
   } catch (err) {
     dispatch(setUser(null));
-    dispatch(setError("Authentication check failed"));
   } finally {
     dispatch(setLoading(false));
   }

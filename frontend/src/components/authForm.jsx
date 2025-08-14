@@ -2,8 +2,9 @@
 import { Form, Input, Button, Typography, Alert } from "antd";
 import { useState } from "react";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const AuthForm = ({ type = "login", onSubmit }) => {
   const [form] = Form.useForm();
@@ -74,6 +75,17 @@ const AuthForm = ({ type = "login", onSubmit }) => {
             {type === "login" ? "Login" : "Register"}
           </Button>
         </Form.Item>
+        <div style={{ textAlign: "center", marginTop: 12 }}>
+          {type === "login" ? (
+            <Text>
+              Don't have an account? <Link href="/register">Register here</Link>
+            </Text>
+          ) : (
+            <Text>
+              Already have an account? <Link href="/login">Login here</Link>
+            </Text>
+          )}
+        </div>
       </Form>
     </div>
   );

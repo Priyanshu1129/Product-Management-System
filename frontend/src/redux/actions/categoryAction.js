@@ -52,7 +52,8 @@ export const createCategory = (categoryData) => async (dispatch, getState) => {
   try {
     const data = await createCategoryService(categoryData);
     const { categories } = getState().category;
-    dispatch(setCategories([...categories, data.category || data]));
+
+    dispatch(setCategories([...categories, data.category]));
     dispatch(setSuccessMessage("Category created successfully"));
   } catch (err) {
     dispatch(
@@ -72,7 +73,7 @@ export const updateCategory =
       const { categories } = getState().category;
       dispatch(
         setCategories(
-          categories.map((cat) => (cat.id === id ? data.category || data : cat))
+          categories.map((cat) => (cat.id === id ? data.category : cat))
         )
       );
       dispatch(setSuccessMessage("Category updated successfully"));

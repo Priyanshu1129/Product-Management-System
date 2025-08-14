@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { useRouter, usePathname } from "next/navigation";
-import { menuItems } from "@/app/config/menuItems";
+import { menuItems } from "@/config/menuItems";
 import { useAuth } from "@/hooks/useAuth";
 
 const { Sider } = Layout;
@@ -44,7 +44,7 @@ export default function Sidebar() {
           letterSpacing: 1,
         }}
       >
-        PMS
+        Dashboard
       </div>
 
       <Menu

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { Layout } from "antd";
+import Loading from "@/components/loading";
 import Sidebar from "@/components/sideBar";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
@@ -17,7 +18,8 @@ export default function DashboardLayout({ children }) {
     }
   }, [loading, isAuthenticated, router]);
 
-  if (loading || !isAuthenticated) return null;
+  if (loading || !isAuthenticated)
+    return <Loading message="Checking authentication..." />;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>

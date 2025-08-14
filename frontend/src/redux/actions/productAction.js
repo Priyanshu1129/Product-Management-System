@@ -65,9 +65,10 @@ export const createProduct = (productData) => async (dispatch, getState) => {
   try {
     const data = await createProductService(productData);
     const { products, total } = getState().product;
+
     dispatch(
       setProducts({
-        products: [...products, data.product || data],
+        products: [...products, data.product],
         total: total + 1,
       })
     );
@@ -88,11 +89,10 @@ export const updateProduct =
     try {
       const data = await updateProductService(id, productData);
       const { products, total } = getState().product;
+
       dispatch(
         setProducts({
-          products: products.map((p) =>
-            p.id === id ? data.product || data : p
-          ),
+          products: products.map((p) => (p.id === id ? data.product : p)),
           total,
         })
       );
