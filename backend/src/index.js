@@ -19,7 +19,10 @@ const app = express();
 // Global middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "https://product-management-system-opal.vercel.app",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );
