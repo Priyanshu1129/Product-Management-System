@@ -1,4 +1,4 @@
-import ErrorHandler from "../utils/ErrorHandler.js";
+import ErrorHandler from "../utils/errorHandler.js";
 
 const validate = (schema, property = "body") => {
   return (req, res, next) => {

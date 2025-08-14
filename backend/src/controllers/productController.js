@@ -1,6 +1,6 @@
 import Product from "../models/product.js";
 import Category from "../models/category.js";
-import ErrorHandler from "../utils/ErrorHandler.js";
+import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import mongoose from "mongoose";
 

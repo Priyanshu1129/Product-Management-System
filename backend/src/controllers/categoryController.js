@@ -1,6 +1,6 @@
 import Category from "../models/category.js";
 import Product from "../models/product.js";
-import ErrorHandler from "../utils/ErrorHandler.js";
+import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 
 // @desc Get all categories

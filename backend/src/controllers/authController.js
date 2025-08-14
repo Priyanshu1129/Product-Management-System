@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
-import ErrorHandler from "../utils/ErrorHandler.js";
+import ErrorHandler from "../utils/errorHandler.js";
 
 // Helper to generate JWT
 const generateToken = (user) => {
