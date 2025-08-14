@@ -9,10 +9,10 @@ export default function AuthInitializer({ children }) {
   const { loading } = useAuth();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(checkAuth());
+  // }, [dispatch]);
 
-  if (loading) return <Loading message="Checking authentication..." />;
+  // if (loading) return <Loading message="Checking authentication..." />;
   return children;
 }

@@ -31,6 +31,7 @@ export const register = (userData) => async (dispatch) => {
 
 // Login
 export const login = (credentials) => async (dispatch) => {
+  console.log("login req made");
   dispatch(setLoading(true));
   try {
     const data = await loginUser(credentials);
@@ -45,6 +46,7 @@ export const login = (credentials) => async (dispatch) => {
 
 // Logout
 export const logout = () => async (dispatch) => {
+  console.log("logout req made");
   try {
     await logoutUser();
     dispatch(setSuccessMessage("Logout successful"));
@@ -72,6 +74,7 @@ export const loadUser = () => async (dispatch) => {
 
 // Check auth status (silent check)
 export const checkAuth = () => async (dispatch) => {
+  console.log("checkAuth req made");
   dispatch(setLoading(true));
   try {
     const res = await checkAuthStatus();

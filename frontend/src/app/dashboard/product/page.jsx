@@ -28,14 +28,18 @@ export default function ProductList() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [fetched, setFetched] = useState(false);
+  const [productFetched, setProductFetched] = useState(false);
+  const [categoryFetched, setCategoryFetched] = useState(false);
 
   useEffect(() => {
-    if ((!products || products.length === 0) && !fetched) {
-      setFetched(true);
+    if ((!products || products.length === 0) && !productFetched) {
+      setProductFetched(true);
       fetchProducts();
     }
-    getCategories();
+    if ((!categories || categories.length === 0) && !categoryFetched) {
+      setCategoryFetched(true);
+      getCategories();
+    }
   }, [products, categories, fetchProducts, getCategories]);
 
   const handleSearch = (value) => {
