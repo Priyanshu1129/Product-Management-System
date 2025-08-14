@@ -31,15 +31,12 @@ export const register = (userData) => async (dispatch) => {
 
 // Login
 export const login = (credentials) => async (dispatch) => {
-  console.log("login req made");
   dispatch(setLoading(true));
   try {
     const data = await loginUser(credentials);
-    console.log("login-res", data);
     dispatch(setUser(data.user));
     dispatch(setSuccessMessage("Login successful"));
   } catch (err) {
-    console.log("login-err", err);
     dispatch(setError(err.response?.data?.message || "Login failed"));
   } finally {
     dispatch(setLoading(false));
