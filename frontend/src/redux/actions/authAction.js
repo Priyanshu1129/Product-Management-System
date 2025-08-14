@@ -1,0 +1,90 @@
+// actions/authActions.js
+import {
+  setLoading,
+  setUser,
+  setError,
+  setSuccessMessage,
+  logout as logoutReducer,
+} from "../slices/authSlice";
+
+import {
+  registerUser,
+  loginUser,
+  logoutUser,
+  getCurrentUser,
+  checkAuthStatus,
+} from "../../services/authService";
+
+// Register
+export const register = (userData) => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const data = await registerUser(userData);
+    dispatch(setUser(data.user));
+    dispatch(setSuccessMessage("Registration successful"));
+  } catch (err) {
+    dispatch(setError(err.response?.data?.message || "Registration failed"));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+// Login
+export const login = (credentials) => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const data = await loginUser(credentials);
+    dispatch(setUser(data.user));
+    dispatch(setSuccessMessage("Login successful"));
+  } catch (err) {
+    dispatch(setError(err.response?.data?.message || "Login failed"));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+// Logout
+export const logout = () => async (dispatch) => {
+  try {
+    await logoutUser();
+    dispatch(setSuccessMessage("Logout successful"));
+  } catch (err) {
+    dispatch(setError(err.response?.data?.message || "Logout failed"));
+  } finally {
+    dispatch(logoutReducer());
+  }
+};
+
+// Load current user on app start
+export const loadUser = () => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const data = await getCurrentUser();
+    dispatch(setUser(data.user));
+    dispatch(setSuccessMessage("User loaded successfully"));
+  } catch (err) {
+    dispatch(logoutReducer());
+    dispatch(setError("Failed to load user"));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+// Check auth status (silent check)
+export const checkAuth = () => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await checkAuthStatus();
+    if (res.success) {
+      dispatch(setUser(res.user));
+      dispatch(setSuccessMessage("Authenticated successfully"));
+    } else {
+      dispatch(setUser(null));
+    }
+  } catch (err) {
+    dispatch(setUser(null));
+    dispatch(setError("Authentication check failed"));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
