@@ -11,17 +11,7 @@ export default function ProductForm({
   confirmLoading,
 }) {
   const [form] = Form.useForm();
-  const { categories, getCategories } = useCategory();
-  const [loadingCats, setLoadingCats] = useState(false);
-
-  useEffect(() => {
-    const fetchCats = async () => {
-      setLoadingCats(true);
-      await getCategories();
-      setLoadingCats(false);
-    };
-    fetchCats();
-  }, []);
+  const { categories } = useCategory();
 
   useEffect(() => {
     if (initialValues) {
@@ -108,7 +98,7 @@ export default function ProductForm({
           label="Category"
           rules={[{ required: true, message: "Please select category" }]}
         >
-          <Select loading={loadingCats}>
+          <Select>
             {categories.map((cat) => (
               <Select.Option key={cat.id} value={cat.id}>
                 {cat.name}

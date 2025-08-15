@@ -101,8 +101,12 @@ export default function ProductList() {
     },
     {
       title: "Category",
-      dataIndex: ["category", "name"],
+      dataIndex: "category",
       key: "category",
+      render: (categoryId) => {
+        const category = categories?.find((cat) => cat.id === categoryId);
+        return category ? category.name : "-";
+      },
     },
     {
       title: "Stock Qty",

@@ -11,7 +11,6 @@ export const getProducts = catchAsyncError(async (req, res) => {
   limit = parseInt(limit);
 
   const products = await Product.find()
-    .populate("category", "name")
     .skip((page - 1) * limit)
     .limit(limit)
     .sort({ createdAt: -1 });
@@ -52,7 +51,6 @@ export const createProduct = catchAsyncError(
       { session }
     );
 
-    product[0].category = categoryExists;
     res.status(201).json({ success: true, product: product[0] });
   },
   true
@@ -67,9 +65,8 @@ export const updateProduct = catchAsyncError(
     const product = await Product.findById(id).session(session);
     if (!product) return next(new ErrorHandler("Product not found", 404));
 
-    let categoryExists = null;
     if (category) {
-      categoryExists = await Category.findById(category).session(session);
+      const categoryExists = await Category.findById(category).session(session);
       if (!categoryExists) {
         return next(new ErrorHandler("Category not found", 400));
       }
@@ -83,7 +80,6 @@ export const updateProduct = catchAsyncError(
     if (imageUrl) product.imageUrl = imageUrl;
 
     await product.save({ session });
-    product.category = categoryExists;
 
     res.status(200).json({ success: true, product });
   },
@@ -116,9 +112,7 @@ export const searchProducts = catchAsyncError(async (req, res) => {
   if (q) filter.$text = { $search: q };
   if (category) filter.category = category; // already validated by Joi
 
-  const products = await Product.find(filter)
-    .populate("category", "name")
-    .sort({ createdAt: -1 });
+  const products = await Product.find(filter).sort({ createdAt: -1 });
 
   res.status(200).json({ success: true, count: products.length, products });
 });
