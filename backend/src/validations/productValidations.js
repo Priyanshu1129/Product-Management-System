@@ -49,9 +49,6 @@ export const createProductSchema = Joi.object({
     "number.max": "Stock quantity must be at most 100,000",
     "any.required": "Stock quantity is required",
   }),
-  imageUrl: Joi.string().uri().allow("").messages({
-    "string.uri": "Image URL must be a valid URI",
-  }),
 });
 
 // 🔹 Update product schema
@@ -67,7 +64,6 @@ export const updateProductSchema = Joi.object({
   stockQty: Joi.number().min(0).messages({
     "number.min": "Stock cannot be negative",
   }),
-  imageUrl: Joi.string().uri().allow(""),
 }).min(1); // ✅ at least one field must be provided
 
 // 🔹 ID param schema

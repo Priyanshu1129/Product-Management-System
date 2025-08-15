@@ -1,4 +1,3 @@
-// middlewares/errorMiddleware.js
 const error = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message =

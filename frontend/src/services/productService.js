@@ -1,5 +1,5 @@
 // services/productService.js
-import api from "./api";
+import api from "./api"; // Assuming you have an axios instance set up
 
 // Get all products with optional pagination
 export const getProducts = async (page = 1, limit = 10) => {
@@ -16,7 +16,6 @@ export const getProductById = async (id) => {
 // Search products by query
 export const searchProducts = async (query, category) => {
   const params = {};
-  console.log("making search request", { query, category });
   if (query) params.q = query;
   if (category) params.category = category;
 
@@ -26,7 +25,11 @@ export const searchProducts = async (query, category) => {
 
 // Create new product
 export const createProduct = async (data) => {
-  const res = await api.post("/product", data);
+  const res = await api.post("/product", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 

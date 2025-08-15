@@ -15,6 +15,7 @@ import {
   productIdParamSchema,
   searchProductsSchema,
 } from "../validations/productValidations.js";
+import upload from "../middlewares/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -34,10 +35,17 @@ router.get(
 );
 
 // Protected routes
-router.post("/", authMiddleware, validate(createProductSchema), createProduct);
+router.post(
+  "/",
+  authMiddleware,
+  upload.single("image"),
+  validate(createProductSchema),
+  createProduct
+);
 router.put(
   "/:id",
   authMiddleware,
+  upload.single("image"),
   validate(productIdParamSchema, "params"),
   validate(updateProductSchema),
   updateProduct

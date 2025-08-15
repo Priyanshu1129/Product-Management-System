@@ -1,6 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 // ES6 imports
 import express from "express";
-import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -9,7 +10,6 @@ import errorHandler from "./middlewares/errorMiddleware.js";
 import authMiddleware from "./middlewares/authMiddleware.js";
 
 // Load env vars
-dotenv.config();
 
 // Connect to MongoDB
 connectDB();

@@ -3,6 +3,7 @@ import Category from "../models/category.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import mongoose from "mongoose";
+import cloudinary from "../lib/cloudinary.js";
 
 // Get products with pagination
 export const getProducts = catchAsyncError(async (req, res) => {
@@ -38,14 +39,40 @@ export const getProductById = catchAsyncError(async (req, res, next) => {
 // Create product
 export const createProduct = catchAsyncError(
   async (req, res, next, session) => {
-    const { name, description, price, category, stockQty, imageUrl } = req.body;
+    const { name, description, price, category, stockQty } = req.body;
 
     // DB-dependent validation
     const categoryExists = await Category.findById(category).session(session);
     if (!categoryExists) {
       return next(new ErrorHandler("Category not found", 400));
     }
+    let imageUrl = "";
+    console.log("req.file", req.file);
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload_stream(
+        { folder: "products" },
+        (error, result) => {
+          if (error) return next(new ErrorHandler("Image upload failed", 500));
+          imageUrl = result.secure_url;
+        }
+      );
 
+      // since upload_stream is async, wrap in promise
+      await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "products" },
+          (error, result) => {
+            if (error) reject(error);
+            else {
+              imageUrl = result.secure_url;
+              resolve();
+            }
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+    }
+    console.log("image Url", imageUrl);
     const product = await Product.create(
       [{ name, description, price, category, stockQty, imageUrl }],
       { session }

@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-/**
- * Wraps an async route handler with error handling and optional DB transaction.
- *
- * @param {Function} fn - The async route handler function.
- * @param {boolean} useTransaction - Whether to run inside a MongoDB transaction.
- */
 const catchAsyncError = (fn, useTransaction = false) => {
   return async (req, res, next) => {
     if (!useTransaction) {

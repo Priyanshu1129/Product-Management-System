@@ -63,7 +63,16 @@ export const searchProducts = (query, category) => async (dispatch) => {
 export const createProduct = (productData) => async (dispatch, getState) => {
   dispatch(setLoading(true));
   try {
-    const data = await createProductService(productData);
+    const formData = new FormData();
+    Object.keys(productData).forEach((key) => {
+      if (key === "image" && productData.image?.length > 0) {
+        formData.append("image", productData.image[0].originFileObj); // must match upload.single("image")
+      } else {
+        formData.append(key, productData[key]);
+      }
+    });
+
+    const data = await createProductService(formData);
     const { products, total } = getState().product;
 
     dispatch(

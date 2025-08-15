@@ -1,6 +1,7 @@
 "use client";
-import { Form, Input, InputNumber, Select, Switch, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { Form, Input, InputNumber, Select, Upload, Modal } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 import { useCategory } from "@/hooks/useCategory";
 
 export default function ProductForm({
@@ -14,10 +15,21 @@ export default function ProductForm({
   const { categories } = useCategory();
 
   useEffect(() => {
+    console.log("ProductForm initialValues:", initialValues);
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
         category: initialValues.category?.id || initialValues.category,
+        image: initialValues.imageUrl
+        ? [
+            {
+              uid: "-1",
+              name: "product-image.jpg",
+              status: "done",
+              url: initialValues.imageUrl,
+            },
+          ]
+        : [],
       });
     } else {
       form.resetFields();
@@ -125,17 +137,43 @@ export default function ProductForm({
         </Form.Item>
 
         {/* Image URL */}
+
         <Form.Item
-          name="imageUrl"
-          label="Image URL"
-          rules={[
-            {
-              type: "url",
-              message: "Please enter a valid URL",
-            },
-          ]}
+          name="image"
+          label="Product Image"
+          valuePropName="fileList"
+          getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+          rules={[{ required: true, message: "Please upload a product image" }]}
         >
-          <Input />
+
+          <Upload
+            listType="picture-card"
+            multiple={false}
+            beforeUpload={(file) => {
+              const isAllowedType =
+                file.type === "image/jpeg" ||
+                file.type === "image/png" ||
+                file.type === "image/webp";
+              if (!isAllowedType) {
+                message.error("Only JPG/PNG/WEBP files are allowed");
+                return Upload.LIST_IGNORE;
+              }
+
+              const isLt10M = file.size / 1024 / 1024 < 10;
+              if (!isLt10M) {
+                message.error("Image must be smaller than 10MB!");
+                return Upload.LIST_IGNORE;
+              }
+
+              return false; // Prevent auto upload
+            }}
+            maxCount={1}
+          >
+            <div>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>Upload</div>
+            </div>
+          </Upload>
         </Form.Item>
       </Form>
     </Modal>
