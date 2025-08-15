@@ -5,6 +5,7 @@ import { useProduct } from "@/hooks/useProduct";
 import { useCategory } from "@/hooks/useCategory";
 import CrudList from "@/components/crudList";
 import dayjs from "dayjs";
+import { debounce } from "lodash";
 import ProductForm from "@/components/productFormModal";
 import DeleteConfirmModal from "@/components/deleteConfirmModal";
 
@@ -45,9 +46,14 @@ export default function ProductList() {
     }
   }, [products, categories, fetchProducts, getCategories]);
 
-  const handleSearch = (value) => {
+  const debouncedSearch = debounce((value, category) => {
+    searchProductList(value, category);
+  }, 500); // wait 500ms after typing stops
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
     setSearchQuery(value);
-    searchProductList(value, selectedCategory);
+    debouncedSearch(value, selectedCategory);
   };
 
   const handleCategoryChange = (value) => {
@@ -148,8 +154,9 @@ export default function ProductList() {
         <Input.Search
           placeholder="Search by product name"
           allowClear
-          enterButton
-          onSearch={handleSearch}
+          value={searchQuery}
+          // onSearch={handleSearch}
+          onChange={handleSearchChange}
           style={{ width: 300 }}
         />
 

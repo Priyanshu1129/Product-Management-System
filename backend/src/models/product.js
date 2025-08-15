@@ -42,10 +42,8 @@ const ProductSchema = new Schema(
 );
 
 // Text index for search
-ProductSchema.index(
-  { name: "text", description: "text" },
-  { name: "ProductTextIndex" }
-);
+ProductSchema.index({ name: 1 });
+ProductSchema.index({ name: "text", description: "text" });
 
 // Compound index for category + price
 ProductSchema.index({ category: 1, price: 1 });

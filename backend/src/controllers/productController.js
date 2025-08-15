@@ -158,14 +158,37 @@ export const deleteProduct = catchAsyncError(
 );
 
 // Search products
+// export const searchProducts = catchAsyncError(async (req, res) => {
+//   const { q, category } = req.query;
+
+//   const filter = {};
+//   if (q) filter.$text = { $search: q };
+//   if (category) filter.category = category; // already validated by Joi
+
+//   const products = await Product.find(filter).sort({ createdAt: -1 });
+
+//   res.status(200).json({ success: true, count: products.length, products });
+// });
+
+// controller - searchProducts
 export const searchProducts = catchAsyncError(async (req, res) => {
   const { q, category } = req.query;
 
   const filter = {};
-  if (q) filter.$text = { $search: q };
-  if (category) filter.category = category; // already validated by Joi
+
+  if (q) {
+    filter.name = { $regex: q, $options: "i" }; // case-insensitive partial match
+  }
+
+  if (category) {
+    filter.category = category; // validated by Joi
+  }
 
   const products = await Product.find(filter).sort({ createdAt: -1 });
 
-  res.status(200).json({ success: true, count: products.length, products });
+  res.status(200).json({
+    success: true,
+    count: products.length,
+    products,
+  });
 });
