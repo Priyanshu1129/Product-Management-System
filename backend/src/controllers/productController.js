@@ -72,7 +72,6 @@ export const createProduct = catchAsyncError(
         stream.end(req.file.buffer);
       });
     }
-    console.log("image Url", imageUrl);
     const product = await Product.create(
       [{ name, description, price, category, stockQty, imageUrl }],
       { session }
@@ -87,7 +86,7 @@ export const createProduct = catchAsyncError(
 export const updateProduct = catchAsyncError(
   async (req, res, next, session) => {
     const { id } = req.params;
-    const { name, description, price, category, stockQty, imageUrl } = req.body;
+    const { name, description, price, category, stockQty } = req.body;
 
     const product = await Product.findById(id).session(session);
     if (!product) return next(new ErrorHandler("Product not found", 404));
@@ -98,6 +97,33 @@ export const updateProduct = catchAsyncError(
         return next(new ErrorHandler("Category not found", 400));
       }
       product.category = category;
+    }
+
+    let imageUrl = "";
+
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload_stream(
+        { folder: "products" },
+        (error, result) => {
+          if (error) return next(new ErrorHandler("Image upload failed", 500));
+          imageUrl = result.secure_url;
+        }
+      );
+
+      // since upload_stream is async, wrap in promise
+      await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "products" },
+          (error, result) => {
+            if (error) reject(error);
+            else {
+              imageUrl = result.secure_url;
+              resolve();
+            }
+          }
+        );
+        stream.end(req.file.buffer);
+      });
     }
 
     if (name) product.name = name;
