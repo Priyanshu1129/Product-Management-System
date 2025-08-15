@@ -96,7 +96,15 @@ export const updateProduct =
   (id, productData) => async (dispatch, getState) => {
     dispatch(setLoading(true));
     try {
-      const data = await updateProductService(id, productData);
+      const formData = new FormData();
+      Object.keys(productData).forEach((key) => {
+        if (key === "image" && productData.image?.length > 0) {
+          formData.append("image", productData.image[0].originFileObj); // must match upload.single("image")
+        } else {
+          formData.append(key, productData[key]);
+        }
+      });
+      const data = await updateProductService(id, formData);
       const { products, total } = getState().product;
 
       dispatch(

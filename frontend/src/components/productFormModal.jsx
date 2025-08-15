@@ -15,21 +15,20 @@ export default function ProductForm({
   const { categories } = useCategory();
 
   useEffect(() => {
-    console.log("ProductForm initialValues:", initialValues);
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
         category: initialValues.category?.id || initialValues.category,
         image: initialValues.imageUrl
-        ? [
-            {
-              uid: "-1",
-              name: "product-image.jpg",
-              status: "done",
-              url: initialValues.imageUrl,
-            },
-          ]
-        : [],
+          ? [
+              {
+                uid: "-1",
+                name: "product-image.jpg",
+                status: "done",
+                url: initialValues.imageUrl,
+              },
+            ]
+          : [],
       });
     } else {
       form.resetFields();
@@ -145,7 +144,6 @@ export default function ProductForm({
           getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
           rules={[{ required: true, message: "Please upload a product image" }]}
         >
-
           <Upload
             listType="picture-card"
             multiple={false}

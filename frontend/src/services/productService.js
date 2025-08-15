@@ -35,7 +35,11 @@ export const createProduct = async (data) => {
 
 // Update existing product
 export const updateProduct = async (id, data) => {
-  const res = await api.put(`/product/${id}`, data);
+  const res = await api.put(`/product/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
