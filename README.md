@@ -1,8 +1,3 @@
-Here’s your updated **README.md** with the new **data seeding instructions** included under **Backend** setup.
-I also clarified that `npm run seed` feeds sample products and categories into the database.
-
----
-
 ````markdown
 # Product Management System
 
@@ -152,3 +147,5 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+```
+```
