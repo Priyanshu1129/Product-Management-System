@@ -20,7 +20,6 @@ This application allows users to register, log in, manage products and categorie
 - Protected dashboard for managing products and categories  
 - CRUD operations for products and categories  
 - Search products by name or description  
-- Responsive UI built with Ant Design  
 
 ---
 
