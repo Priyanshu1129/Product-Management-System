@@ -21,12 +21,16 @@ export default function CategoryList() {
   const [deletingCategory, setDeletingCategory] = useState(null);
   const [fetched, setFetched] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   useEffect(() => {
     if ((!categories || categories.length === 0) && !fetched) {
       setFetched(true);
       getCategories();
     }
   }, [categories, getCategories]);
+
   const handleAdd = () => {
     setEditingCategory(null);
     setModalVisible(true);
@@ -58,18 +62,36 @@ export default function CategoryList() {
     setDeleteModalVisible(false);
     setDeletingCategory(null);
   };
+
+  const handleTableChange = (pagination) => {
+    setCurrentPage(pagination.current);
+    setPageSize(pagination.pageSize);
+  };
+
+  const paginatedCategories = categories.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   const columns = [{ title: "Name", dataIndex: "name", key: "name" }];
 
   return (
     <>
       <CrudList
         title="Categories"
-        data={categories}
+        data={paginatedCategories}
         columns={columns}
         loading={loading}
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDeleteClick}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: categories.length, // total is still full list length
+          showSizeChanger: true,
+        }}
+        onTableChange={handleTableChange}
       />
       <CategoryFormModal
         visible={modalVisible}

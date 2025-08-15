@@ -11,6 +11,7 @@ import DeleteConfirmModal from "@/components/deleteConfirmModal";
 export default function ProductList() {
   const {
     products,
+    total,
     loading,
     fetchProducts,
     searchProductList,
@@ -30,11 +31,13 @@ export default function ProductList() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [productFetched, setProductFetched] = useState(false);
   const [categoryFetched, setCategoryFetched] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     if ((!products || products.length === 0) && !productFetched) {
       setProductFetched(true);
-      fetchProducts();
+      fetchProducts(currentPage, pageSize);
     }
     if ((!categories || categories.length === 0) && !categoryFetched) {
       setCategoryFetched(true);
@@ -85,6 +88,12 @@ export default function ProductList() {
     }
     setDeleteModalVisible(false);
     setDeletingProduct(null);
+  };
+
+  const handleTableChange = (pagination) => {
+    setCurrentPage(pagination.current);
+    setPageSize(pagination.pageSize);
+    fetchProducts(pagination.current, pagination.pageSize);
   };
 
   const columns = [
@@ -167,6 +176,13 @@ export default function ProductList() {
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDeleteClick}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+        }}
+        onTableChange={handleTableChange}
       />
 
       <ProductForm

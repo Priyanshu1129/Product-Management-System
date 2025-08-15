@@ -76,6 +76,7 @@ export default function ProductForm({
           name="description"
           label="Description"
           rules={[
+            { required: true, message: "Please enter description" },
             { min: 10, message: "Description must be at least 10 characters" },
             {
               max: 1000,

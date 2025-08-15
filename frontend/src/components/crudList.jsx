@@ -14,10 +14,12 @@ export default function CrudList({
   onAdd,
   onEdit,
   onDelete,
+  pagination,
+  onTableChange,
 }) {
   const tableData = data.map((item, index) => ({
     ...item,
-    serialNumber: index + 1,
+    serialNumber: (pagination.current - 1) * pagination.pageSize + (index + 1),
     key: item.id || item._id || index, // ensure unique key
   }));
 
@@ -60,6 +62,8 @@ export default function CrudList({
         }))}
         columns={mergedColumns}
         loading={loading}
+        pagination={pagination}
+        onChange={onTableChange}
       />
     </div>
   );

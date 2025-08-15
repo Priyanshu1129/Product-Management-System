@@ -47,7 +47,7 @@ export const createProduct = catchAsyncError(
       return next(new ErrorHandler("Category not found", 400));
     }
     let imageUrl = "";
-    console.log("req.file", req.file);
+
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload_stream(
         { folder: "products" },
@@ -100,7 +100,7 @@ export const updateProduct = catchAsyncError(
     }
 
     let imageUrl = "";
-    console.log("req.file", req.file);
+
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload_stream(
         { folder: "products" },
@@ -126,7 +126,6 @@ export const updateProduct = catchAsyncError(
       });
     }
 
-    console.log("imageUrl", imageUrl);
     if (name) product.name = name;
     if (description) product.description = description;
     if (price !== undefined) product.price = price;
