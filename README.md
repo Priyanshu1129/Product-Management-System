@@ -1,4 +1,3 @@
-````markdown
 # Product Management System
 
 A simple **e-commerce product management system** built with the MERN stack and Next.js.  
@@ -40,7 +39,7 @@ This application allows users to register, log in, manage products and categorie
 
 ```bash
 cd backend
-````
+```
 
 2. Install dependencies:
 
@@ -57,15 +56,11 @@ JWT_SECRET=your_jwt_secret
 NODE_ENV=development
 ```
 
-4. **(Optional) Seed sample data**
-   To quickly populate the database with sample categories and products, run:
+4. Seed sample data (optional):
 
 ```bash
 npm run seed
 ```
-
-> This will insert predefined sample data into your MongoDB.
-> If you re-run it, it will first clear existing categories and products, then re-insert the sample set.
 
 5. Start the backend server:
 
@@ -121,10 +116,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | Method | Endpoint | Description           | Protected |
 | ------ | -------- | --------------------- | --------- |
 | GET    | /        | Get all categories    | Yes       |
-| GET    | /\:id    | Get category by ID    | Yes       |
+| GET    | /:id     | Get category by ID    | Yes       |
 | POST   | /        | Create a new category | Yes       |
-| PUT    | /\:id    | Update category by ID | Yes       |
-| DELETE | /\:id    | Delete category by ID | Yes       |
+| PUT    | /:id     | Update category by ID | Yes       |
+| DELETE | /:id     | Delete category by ID | Yes       |
 
 ### Product Routes (`/api/product`)
 
@@ -132,20 +127,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | ------ | -------- | ----------------------------------- | --------- |
 | GET    | /        | Get all products                    | Yes       |
 | GET    | /search  | Search products by name/description | Yes       |
-| GET    | /\:id    | Get product by ID                   | Yes       |
+| GET    | /:id     | Get product by ID                   | Yes       |
 | POST   | /        | Create a new product                | Yes       |
-| PUT    | /\:id    | Update product by ID                | Yes       |
-| DELETE | /\:id    | Delete product by ID                | Yes       |
+| PUT    | /:id     | Update product by ID                | Yes       |
+| DELETE | /:id     | Delete product by ID                | Yes       |
 
 ---
 
 ## Notes
 
-* All protected routes require a valid JWT token stored in an **HttpOnly cookie**.
-* Use the `.env.example` file as a reference for environment variables.
-* Ensure the frontend and backend URLs match when deploying to production (e.g., Vercel + Render).
+- All protected routes require a valid JWT token stored in an **HttpOnly cookie**.  
+- Use the `.env.example` file as a reference for environment variables.  
+- Ensure the frontend and backend URLs match when deploying to production (e.g., Vercel + Render).  
 
 ---
-
-```
-```
